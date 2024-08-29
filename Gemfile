@@ -41,3 +41,8 @@ group :development, :test do
 end
 
 
+
+gem "graphql", "~> 2.3"
+gem "graphiql-rails", "~> 1.4", ">= 1.4.8"
+
+gem "sprockets-rails", "~> 3.5"
