@@ -53,6 +53,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_04_080552) do
 
   create_table "organizations", force: :cascade do |t|
     t.string "name"
+    t.string "product_category"
+    t.string "product_status"
+    t.string "product_unit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
