@@ -46,3 +46,8 @@ gem "graphql", "~> 2.3"
 gem "graphiql-rails", "~> 1.4", ">= 1.4.8"
 
 gem "sprockets-rails", "~> 3.5"
+
+gem "rack-cors", "~> 1.1", ">= 1.1.1"
+gem "devise", "~> 4.9"
+
+# gem "devise-jwt", "~> 0.12.1"
