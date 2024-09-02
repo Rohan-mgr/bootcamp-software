@@ -9,12 +9,22 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
+  config.jwt do |jwt|
+    jwt.secret = Rails.application.credentials.development.devise_jwt_secret_key!
+    jwt.dispatch_requests = [
+      [ "POST", %r{^/graphql$} ]
+    ]
+    # jwt.revocation_requests = [
+    #   [ "DELETE", %r{^/logout$} ]
+    # ]
+    jwt.expiration_time = 1.day.to_i
+  end
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '9ed3474bb69579c71cb0afcf0c73a751968c8af9be334e81ef3cf33b0e09032eb539c67cc46f1571b390b0f144f1a2c78b5ef9914ba55c5c4e51651249cca0c5'
+  # config.secret_key = 'ecb21d9b6907778089686c4f6ebcce6af5c706b722eeb8cffd62640561b29af0a886cf26647d7553338bdf3d8499fef47dcdb6e9f221ced9a0a01ec43899f86c'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -97,7 +107,7 @@ Devise.setup do |config|
   # Notice that if you are skipping storage for all authentication paths, you
   # may want to disable generating routes to Devise's sessions controller by
   # passing skip: :sessions to `devise_for` in your config/routes.rb
-  config.skip_session_storage = [ :http_auth ]
+  config.skip_session_storage = [ :http_auth, :params_auth ]
 
   # By default, Devise cleans up the CSRF token on authentication to
   # avoid CSRF token fixation attacks. This means that, when using AJAX
@@ -126,7 +136,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '387d6a01f397a941db859c9daf2bdd8f834994a1b2b5d4396c6ed19b0193ef5182bcf506b5002411109b921db494d72746ff00ac24bfb9add004690c91a1369f'
+  # config.pepper = 'bae12dafbba23b9d6f6f4db77f946174b4c698b9aff269ba34424ab488a67d090b043cd2548b26232c77435b17787485c1648d8542048f4dcffc64d3247eb83b'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -263,7 +273,7 @@ Devise.setup do |config|
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  config.navigational_formats = []
+  # config.navigational_formats = ['*/*', :html, :turbo_stream]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete

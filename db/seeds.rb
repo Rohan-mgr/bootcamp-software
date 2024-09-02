@@ -7,3 +7,7 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+[ "Himal Lubricants Pvt.Ltd", "Sahara Gas Industry Pvt. Ltd.", "NARAYANI OIL AND REFINARY UDYOG.PVT. LTD.", "ADARSH OIL INDUSTRIES" ].each do |orgName|
+  Organization.create(name: orgName)
+end
