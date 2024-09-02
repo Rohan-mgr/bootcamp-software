@@ -49,6 +49,6 @@ gem "sprockets-rails", "~> 3.5"
 
 gem "rack-cors", "~> 1.1", ">= 1.1.1"
 gem "devise", "~> 4.9"
-gem "devise-jwt", "~> 0.11.0"
+gem "devise-jwt", "~> 0.12.1"
 
 gem "acts_as_tenant", "~> 1.0"
