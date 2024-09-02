@@ -37,7 +37,7 @@ services:
     environment:
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres
-
+        
 volumes:
   redis-data:
   postgres-data:
