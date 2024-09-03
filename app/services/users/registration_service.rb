@@ -26,13 +26,17 @@ module Users
 
     def handle_user_registration
       ActiveRecord::Base.transaction do
-        ActsAsTenant.without_tenant do
-          @user = User.new(sign_up_params)
-          if @user.save!
-            Membership.create!(user_id: @user.id, organization_id: organization.id) if organization.present?
+        if organization.present?
+          ActsAsTenant.without_tenant do
+            @user = User.new(sign_up_params)
+            if @user.save!
+              @success = true
+              @errors = []
+            end
           end
-          @success = true
-          @errors = []
+        else
+        @success = false
+        @errors << "Organzation not found!"
         end
       end
 
@@ -46,7 +50,7 @@ module Users
     end
 
     def sign_up_params
-      ActionController::Parameters.new(params).permit(:name, :email, :password, :password_confirmation, :roles)
+      ActionController::Parameters.new(params).permit(:name, :email, :password, :password_confirmation, :roles, :organization_id)
     end
   end
 end
