@@ -51,7 +51,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_04_080552) do
     t.index ["organization_id"], name: "index_memberships_on_organization_id"
   end
 
-  create_table "organizations", force: :cascade do |t|
+  create_table "products", force: :cascade do |t|
     t.string "name"
     t.string "product_category"
     t.string "product_status"
@@ -87,5 +87,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_04_080552) do
   add_foreign_key "customer_branches", "customers"
   add_foreign_key "memberships", "customers"
   add_foreign_key "memberships", "organizations"
+  add_foreign_key "products", "organizations"
+  add_foreign_key "products", "users"
   add_foreign_key "users", "organizations"
 end
