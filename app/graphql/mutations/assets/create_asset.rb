@@ -1,22 +1,30 @@
 module Mutations
-  module Assets 
+  module Assets
     class CreateAsset < Mutations::BaseMutation
-      argument :asset, Types::InputObjects::AssetInputType, require: true
+      argument :asset_info, Types::InputObjects::AssetInputType, required: true
       field :asset, Types::Assets::AssetType, null: false
       field :errors, [ String ], null: false
 
-      def resolve
-        new_asset = Asset.new(
-          name: asset[:name],
-          asset_status: asset[:asset_status],
-          asset_category: asset[:asset_category]
-        )
-        if new_asset.save
-          { asset: new_asset, error: [] }
-        else
-          { asset: nil, errors: new_asset.errors.full_messages }
+      def resolve(asset_info: {})
+        service = ::Assets::CreateAssetService.new(asset_info.to_h)
+        asset, errors =service.call
+          if asset
+            {
+              asset: asset,
+              errors: []
+            }
+          else
+            {
+              asset: nil,
+              errors: errors
+            }
+          end
+        rescue GraphQL::ExecutionError => err
+          {
+            asset: nil,
+            errors: [ err.message ]
 
-        end
+          }
       end
     end
   end

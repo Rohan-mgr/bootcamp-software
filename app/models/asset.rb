@@ -1,5 +1,6 @@
 class Asset < ApplicationRecord
-
-  include Asset::AssetCategory
-  include Asset::AssetStatus
+  include Asset::AssetCategoryEnum
+  include Asset::AssetStatusEnum
+  belongs_to :user
+  acts_as_tenant :organization
 end

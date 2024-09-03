@@ -3,4 +3,5 @@ class Organization < ApplicationRecord
 
   has_many :memberships
   has_many :customers, through: :memberships
+  has_many :assets
 end

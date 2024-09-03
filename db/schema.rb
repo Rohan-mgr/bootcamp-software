@@ -66,4 +66,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_04_013646) do
   add_foreign_key "memberships", "customers"
   add_foreign_key "memberships", "organizations"
   add_foreign_key "users", "organizations"
+  add_foreign_key "assets", "organizations"
+  add_foreign_key "assets", "users"
 end

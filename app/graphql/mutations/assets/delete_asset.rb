@@ -1,21 +1,28 @@
 module Mutations
   module Assets
     class DeleteAsset < Mutations::BaseMutation
-      argumet :id, ID, require: true
+      argument :id, ID, required: true
       field :message, String, null: false
       field :errors, [ String ], null: false
 
-      def resolve(id:, asset:)
-        begin
-          existing_asset = Asset.find(id)
-          if existing_asset.destroy
-          { message: "Asset Destroyed successfully", errors: [] }
-          else
-            { message: "", errors: existing_asset.errors.full_messages }
-          end
-        rescue ActiveRecord::RecordNotFound => e
-          { message: "Failed to Destroy message", errors: [ e.message ] }
+      def resolve(id:)
+        unless context[:create_user]&.admin?
+        raise GraphQL::ExecutionError, "You are not authorized to  perform this action"
         end
+
+        service = ::Assets::DeleteAssetService.new(id)
+        message, errors = service.call
+        
+            {
+              message: message,
+              errors: errors
+            }
+
+        rescue GraphQL::ExecutionError => err
+            {
+              message: "Failed to delete assets",
+              errors: [ err.message ]
+            }
       end
     end
   end

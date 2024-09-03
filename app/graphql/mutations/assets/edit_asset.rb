@@ -7,17 +7,29 @@ module Mutations
       field :errors, [ String ], null: false
 
       def resolve(id:, asset:)
-        existing_asset = Asset.find(id)
-        if existing_asset.update(
-          name: asset[:name],
-          asset_status: asset[:asset_status],
-          asset_category: asset[:asset_category]
-        )
-        { asset: existing_asset, error: [] }
-        else
-          { asset: nil, errors: existing_asset.errors.full_messages }
+          unless context[:create_user]&.admin?
+          raise GraphQL::ExecutionError, "You are not authorized to  perform this action"
+          end
 
-        end
+          service = ::Assets::EditAssetService.new(id, asset.to_h)
+          updated_asset, errors = service.all
+           if updated_asset
+             {
+              asset: updated_asset,
+              errors: []
+             }
+           else
+              {
+                asset: nil,
+                errors: []
+              }
+           end
+
+       rescue GraphQL::ExecutionError => err
+        {
+          asset: nil,
+          errors: [ err.message ]
+        }
       end
     end
   end
