@@ -18,8 +18,7 @@ class ApplicationController < ActionController::API
 
   def handle_current_tenant
     return nil unless current_user
-    org_id = Membership.find_by!(user_id: current_user.id)[:organization_id]
-    current_organization = Organization.find(org_id)
+    current_organization = current_user.organization
     set_current_tenant(current_organization)
   end
 end
