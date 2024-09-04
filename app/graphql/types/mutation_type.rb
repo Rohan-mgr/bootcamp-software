@@ -6,5 +6,6 @@ module Types
    field :user_session, description: "Mutation for user sign in", mutation: Mutations::Users::UserLogin
    field :user_logout, description: "Mutation for user sign out", mutation: Mutations::Users::UserLogout
    field :create_customer, description: "Mutation for creating customer", mutation: Mutations::Customers::CreateCustomer
+   field :create_customer_branch, description: "Mutation for creating customer branch", mutation: Mutations::CustomersBranch::CreateCustomerBranch
   end
 end

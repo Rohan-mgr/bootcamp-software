@@ -22,5 +22,6 @@ module Types
     # They will be entry points for queries on your schema.
 
     field :get_customers, description: "Resolvers for getting organization customers", resolver: Resolvers::Customers::GetCustomers
+    field :get_customer_branch, description: "Resolvers for getting customer branches", resolver: Resolvers::CustomersBranch::GetCustomerBranch
   end
 end
