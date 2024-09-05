@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_04_013646) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_04_080552) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assets", force: :cascade do |t|
+    t.string "asset_id"
+    t.string "asset_status"
+    t.string "asset_category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "organization_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["asset_id"], name: "index_assets_on_asset_id", unique: true
+    t.index ["organization_id"], name: "index_assets_on_organization_id"
+    t.index ["user_id"], name: "index_assets_on_user_id"
+  end
 
   create_table "customer_branches", force: :cascade do |t|
     t.string "name"
@@ -62,6 +75,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_04_013646) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "assets", "organizations"
+  add_foreign_key "assets", "users"
   add_foreign_key "customer_branches", "customers"
   add_foreign_key "memberships", "customers"
   add_foreign_key "memberships", "organizations"

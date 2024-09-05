@@ -4,3 +4,4 @@ class AddJtiToUsers < ActiveRecord::Migration[7.2]
     add_index :users, :jti
   end
 end
+

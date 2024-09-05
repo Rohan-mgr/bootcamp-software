@@ -8,6 +8,7 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: self
 
   acts_as_tenant :organization, optional: true
+  has_many :assets
 
   def generate_jwt
     JWT.encode({ id: id, exp: 1.day.from_now.to_i, jti: jti }, Rails.application.credentials.development.devise_jwt_secret_key!)
