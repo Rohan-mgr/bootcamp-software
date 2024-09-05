@@ -57,6 +57,19 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_04_080552) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.string "product_category"
+    t.string "product_status"
+    t.string "product_unit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.bigint "organization_id", null: false
+    t.index ["organization_id"], name: "index_products_on_organization_id"
+    t.index ["user_id"], name: "index_products_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "roles", default: "member", null: false
@@ -80,5 +93,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_04_080552) do
   add_foreign_key "customer_branches", "customers"
   add_foreign_key "memberships", "customers"
   add_foreign_key "memberships", "organizations"
+  add_foreign_key "products", "organizations"
+  add_foreign_key "products", "users"
   add_foreign_key "users", "organizations"
 end
