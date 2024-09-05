@@ -1,9 +1,9 @@
 module Products
   class ProductService
     attr_reader :params
-    attr_accessor :success, :errors
+    attr_accessor :success, :errors, :product, :products
 
-    def initialize
+    def initialize(params = {})
       @params = params
       @success = false
       @errors = []
@@ -43,7 +43,7 @@ module Products
 
     private
     def find_products
-      ActiveRecord::Base.transaction do
+      begin
         @products = Product.all.reverse
 
         @success = true
@@ -57,11 +57,12 @@ module Products
 
     def create_product
       ActiveRecord::Base.transaction do
-        @product = Product.new(product_params)
-        @product.save!
-
-        @success = true
-        @errors = []
+        @product = Product.new(product_params.merge(user_id: current_user.id))
+        # debugger
+        if @product.save!
+          @success = true
+          @errors = []
+        end
       end
 
     rescue ActiveRecord::RecordInvalid => err
@@ -75,10 +76,20 @@ module Products
     def update_product
       ActiveRecord::Base.transaction do
        @product = Product.find(params[:id])
-       @product.update!(product_params)
-
-       @success = true
-       @errors = []
+        if current_user.admin?
+          if @product.update!(product_params)
+            @success = true
+            @errors = []
+          else
+            @success = false
+            @errors = @product.errors.full_messages
+            # raise ActiveRecord::Rollback
+          end
+        else
+          @success = false
+          @errors = [ "Sorry! You do not have permission to update this product." ]
+          # raise ActiveRecord::Rollback
+        end
       end
 
     rescue ActiveRecord::RecordInvalid => err
@@ -91,19 +102,33 @@ module Products
 
     def delete_product
       begin
-        @product = Product.find(params[:id])
-        @product.destroy!
+         @product = Product.find(params[:id])
+        if current_user.admin?
+          if @product.destroy!
+            @success = true
+            @errors = []
+          else
+            @success = false
+            @errors = @product.errors.full_messages
+          end
+        else
+          @success = false
+          @errorrs = [ "Sorry! You dont have permission to delete the product." ]
+        end
 
-        @success = true
-        @errors = []
       rescue ActiveRecord::RecordNotFound => err
         @success = false
         @errors << err.message
       end
     end
 
+    def current_user
+      current_user = params[:current_user]
+      @current_user ||= current_user
+    end
+
     def product_params
-      params.require(:product).permit(:name, :product_category, :product_status, :product_unit)
+      ActionController::Parameters.new(params).permit(:name, :product_category, :product_status, :product_unit)
     end
   end
 end

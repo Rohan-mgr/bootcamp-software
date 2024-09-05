@@ -9,6 +9,7 @@ class User < ApplicationRecord
 
   acts_as_tenant :organization, optional: true
   has_many :assets
+  has_many :products
 
   def generate_jwt
     JWT.encode({ id: id, exp: 1.day.from_now.to_i, jti: jti }, Rails.application.credentials.development.devise_jwt_secret_key!)

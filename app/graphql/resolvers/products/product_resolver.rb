@@ -1,11 +1,21 @@
 module Resolvers
   module Products
     class ProductResolver < BaseResolver
-      type Types::Products::ProductType, null: true
-      argument :product_id, ID, required: true
+      type Types::Products::ProductResponseType, null: true
 
-      def product(id:)
-        Product.find(product_id)
+      def resolve
+        begin
+          products = Product.order(created_at: :DESC)
+          {
+            products: products,
+            errors: []
+          }
+        rescue GraphQL::ExecutionError => err
+          {
+            products: nil,
+            errors: [ err.message ]
+          }
+        end
       end
     end
   end

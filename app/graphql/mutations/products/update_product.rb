@@ -1,6 +1,6 @@
 module Mutations
   module Products
-    class CreateProduct < BaseMutation
+    class UpdateProduct < BaseMutation
       argument :product_info, Types::InputObjects::ProductInputType, required: true
 
       field :product, Types::Products::ProductType, null: true
@@ -8,7 +8,8 @@ module Mutations
 
       def resolve(product_info: {})
         begin
-          product_service = ::Products::ProductService.new(product_info.to_h.merge(current_user: context[:current_user])).execute_create_product
+          product_service = ::Products::ProductService.new(product_info.to_h.merge(current_user: context[:current_user])).execute_update_product
+
           if product_service.success?
             {
               product: product_service.product,
@@ -20,6 +21,7 @@ module Mutations
               errors: product_service.errors
             }
           end
+
         rescue GraphQL::ExecutionError => err
           {
             product: nil,

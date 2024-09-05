@@ -2,6 +2,8 @@
 
 module Types
   class MutationType < Types::BaseObject
+   field :delete_product, description: "Mutations for deleting products", mutation: Mutations::Products::DeleteProduct
+   field :update_product, description: "Mutation for updating products", mutation: Mutations::Products::UpdateProduct
    field :create_product, description: "Mutation for creating products", mutation: Mutations::Products::CreateProduct
    field :create_user, description: "Mutation for creating users", mutation: Mutations::Users::CreateUser
    field :user_session, description: "Mutation for user sign in", mutation: Mutations::Users::UserLogin

@@ -10,6 +10,8 @@ module Types
       field :product_unit, Enums::Products::ProductUnitEnum
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+      field :organization_id, ID, null: false
+      field :user_id, ID, null: false
     end
   end
 end

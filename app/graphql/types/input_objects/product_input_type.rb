@@ -1,12 +1,11 @@
 module Types
   module InputObjects
     class ProductInputType < BaseInputObject
+      argument :id, ID, required: false
       argument :name, String, required: true
-      argument :category, Enums::Products::ProductCategoryEnum, required: true
-      argument :status, Enums::Products::ProductStatusEnum, required: true
-      argument :unit, Enums::Products::ProductUnitEnum, required: true
-      argument :organization_id, ID, required: true
-      argument :user_id, ID, required: true
+      argument :product_category, Enums::Products::ProductCategoryEnum, required: true
+      argument :product_status, Enums::Products::ProductStatusEnum, required: true
+      argument :product_unit, Enums::Products::ProductUnitEnum, required: true
     end
   end
 end
