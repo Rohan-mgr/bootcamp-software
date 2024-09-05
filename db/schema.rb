@@ -51,6 +51,12 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_04_080552) do
     t.index ["organization_id"], name: "index_memberships_on_organization_id"
   end
 
+  create_table "organizations", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.string "product_category"
