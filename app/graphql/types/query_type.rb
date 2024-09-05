@@ -24,7 +24,5 @@ module Types
     field :get_customers, description: "Resolvers for getting organization customers", resolver: Resolvers::Customers::GetCustomers
     field :get_customer_branch, description: "Resolvers for getting customer branches", resolver: Resolvers::CustomersBranch::GetCustomerBranch
     field :get_assets, description: "Resolver for fetching Organization assets", resolver: Resolvers::Assets::GetAssets
-    field :get_customers, description: "Resolvers for getting organization customers", resolver: Resolvers::Customers::GetCustomers
-    field :get_customer_branch, description: "Resolvers for getting customer branches", resolver: Resolvers::CustomersBranch::GetCustomerBranch
   end
 end

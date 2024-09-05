@@ -10,7 +10,5 @@ module Types
    field :create_asset, description: "Mutation for creating asset", mutation: Mutations::Assets::CreateAsset
    field :delete_asset, description: "Mutation for deleting asset", mutation: Mutations::Assets::DeleteAsset
    field :edit_asset, description: "Mutation for editing asset", mutation: Mutations::Assets::EditAsset
-   field :create_customer, description: "Mutation for creating customer", mutation: Mutations::Customers::CreateCustomer
-   field :create_customer_branch, description: "Mutation for creating customer branch", mutation: Mutations::CustomersBranch::CreateCustomerBranch
   end
 end
