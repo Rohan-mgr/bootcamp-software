@@ -3,5 +3,5 @@ class Organization < ApplicationRecord
 
   has_many :memberships
   has_many :customers, through: :memberships
-  has_many :assets
+  has_many :assets, dependent: :destroy
 end

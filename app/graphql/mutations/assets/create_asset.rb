@@ -6,23 +6,25 @@ module Mutations
       field :errors, [ String ], null: false
 
       def resolve(asset_info: {})
-        service = ::Assets::CreateAssetService.new(asset_info.to_h)
-        asset, errors =service.call
-          if asset
-            {
-              asset: asset,
-              errors: []
-            }
-          else
-            {
-              asset: nil,
-              errors: errors
-            }
-          end
-        rescue GraphQL::ExecutionError => err
+       begin
+          asset_service = ::Assets::AssetService.new(asset_info.to_h.merge(current_user: context[:current_user])).execute_create_asset
+
+            if asset_service.success?
+              {
+                asset: asset_service.asset,
+                errors: []
+              }
+            else
+              {
+                asset: nil,
+                errors: [ asset_service.errors ]
+              }
+            end
+       end
+      rescue GraphQL::ExecutionError => e
           {
             asset: nil,
-            errors: [ err.message ]
+            errors: [ e.message ]
 
           }
       end

@@ -4,7 +4,7 @@ module Types
   module Assets
     class AssetType < Types::BaseObject
       field :id, ID, null: false
-      field :name, String
+      field :asset_id, String, null: false
       field :asset_status, Enums::AssetStatusEnum, null: false
       field :asset_category, Types::Enums::AssetCategoryEnum, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
