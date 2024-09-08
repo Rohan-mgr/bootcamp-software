@@ -94,7 +94,7 @@ module Products
 
     rescue ActiveRecord::RecordInvalid => err
       @success = false
-      @errors << err.message
+      @erroparamsrs << err.message
     rescue ActiveRecord::RecordNotFound => err
       @success = false
       @errors << err.message
