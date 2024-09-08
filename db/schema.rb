@@ -94,10 +94,12 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_09_061900) do
     t.datetime "completed_at"
     t.bigint "customer_id", null: false
     t.bigint "organization_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_order_groups_on_customer_id"
     t.index ["organization_id"], name: "index_order_groups_on_organization_id"
+    t.index ["user_id"], name: "index_order_groups_on_user_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -150,6 +152,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_09_061900) do
   add_foreign_key "memberships", "organizations"
   add_foreign_key "order_groups", "customers"
   add_foreign_key "order_groups", "organizations"
+  add_foreign_key "order_groups", "users"
   add_foreign_key "products", "organizations"
   add_foreign_key "products", "users"
   add_foreign_key "users", "organizations"

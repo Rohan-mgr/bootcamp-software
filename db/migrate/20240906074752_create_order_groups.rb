@@ -6,6 +6,7 @@ class CreateOrderGroups < ActiveRecord::Migration[7.2]
       t.datetime :completed_at
       t.references :customer, null: false, foreign_key: true
       t.references :organization, null: false, foreign_key: true
+      t.references :user, null: false, foreign_key: true
 
       t.timestamps
     end

@@ -3,26 +3,27 @@ module Mutations
     class CreateOrder < BaseMutation
       argument :order_group_info, Types::InputObjects::OrderGroupInputType, required: true
 
-      field :message, String, null: false
+      field :order, Types::Orders::OrderType, null: true
       field :errors, [ String ], null: true
 
       def resolve(order_group_info: {})
         begin
-          order_service = ::Orders::OrderService.new(order_group_info.to_h).execute_order_creation
+          order_service = ::Orders::OrderService.new(order_group_info.to_h.merge(current_user: context[:current_user])).execute_order_creation
           if order_service.success?
             {
-              message: "Order created successfully",
+              order: order_service.order,
               errors: []
             }
           else
             {
-              message: "Failed to created order",
+              order: nil,
               errrors: [ order_service.errors ]
             }
           end
         end
       rescue GraphQL::ExecutionError => err
         {
+          order: nil,
           errors: [ err.message ]
         }
       end

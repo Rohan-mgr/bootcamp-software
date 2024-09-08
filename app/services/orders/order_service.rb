@@ -1,7 +1,7 @@
 module Orders
   class OrderService
     attr_reader :params
-    attr_accessor :success, :errors, :orders
+    attr_accessor :success, :errors, :order, :orders
 
     def initialize(params = {})
       @params = params
@@ -19,6 +19,11 @@ module Orders
       self
     end
 
+    def execute_order_deletion
+      handle_delete_order
+      self
+    end
+
     def success?
       @success || @errors.empty?
     end
@@ -31,10 +36,11 @@ module Orders
 
     def handle_create_order
       ActiveRecord::Base.transaction do
-        order_group = OrderGroup.new(order_params)
+        order_group = OrderGroup.new(order_params.merge(user_id: user.id))
         if order_group.save!
           @success = true
           @errors = []
+          @order = serialize_order(order_group)
         else
           @success = false
           @errors << order_group.errors.full_messages
@@ -48,19 +54,50 @@ module Orders
 
     def handle_fetch_orders
       begin
-        order_group = OrderGroup.includes(delivery_order: :line_items).order(created_at: :DESC)
+        order_group = OrderGroup.order(created_at: :DESC)
         if order_group.empty?
           @success = false
           @errors << "No orders created yet"
         else
           @success = true
           @errors = []
-          @orders = order_group.as_json(include: { delivery_order: { include: :line_items } })
+          @orders = serialize_order(order_group)
         end
       end
     rescue ActiveRecord::ActiveRecordError => err
       @success = false
       @errors << err.message
+    end
+
+    def handle_delete_order
+      begin
+        order_group = OrderGroup.find(params[:order_id])
+        if user.admin? && user.id == order_group.user_id
+          if order_group.destroy!
+            @success = true
+            @errors = []
+            @order = serialize_order(order_group)
+          else
+            @success = false
+            @errors << order_group.errors.full_messages
+          end
+        else
+          @success = false
+          @errors << "You are not authorized to perform this action"
+        end
+      end
+    rescue ActiveRecord::ActiveRecordError => err
+      @success = false
+      @errors << err.message
+    end
+
+    def user
+      current_user = params[:current_user]
+      user ||= current_user
+    end
+
+    def serialize_order(order)
+      order.as_json(include: { delivery_order: { include: :line_items } })
     end
 
     def order_params
