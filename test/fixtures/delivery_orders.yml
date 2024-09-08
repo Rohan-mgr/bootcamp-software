@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  planned_at: 2024-09-07 13:52:05
+  status: MyString
+  completed_at: 2024-09-07 13:52:05
+  customerbranch: one
+  ordergroup: one
+  asset: one
+
+two:
+  planned_at: 2024-09-07 13:52:05
+  status: MyString
+  completed_at: 2024-09-07 13:52:05
+  customerbranch: two
+  ordergroup: two
+  asset: two
