@@ -14,6 +14,11 @@ module Orders
       self
     end
 
+    def execution_order_edition
+      handle_update_order
+      self
+    end
+
     def execute_fetch_orders
       handle_fetch_orders
       self
@@ -50,6 +55,28 @@ module Orders
     rescue ActiveRecord::Rollback => err
       @success = false
       @errors << err.message
+    end
+
+    def handle_update_order
+      begin
+        order_group = OrderGroup.find(params[:order_id])
+        if user.admin? && user.id == order_group.user_id
+          if order_group.update!(order_params)
+            @success = true
+            @errors = []
+            @order = serialize_order(order_group)
+          else
+            @success = false
+            @errors << order_group.errors.full_messages
+          end
+        else
+          @success = false
+          @errors << "You are not authorized to perform this action"
+        end
+      end
+    rescue ActiveRecord::RecordNotFound
+      @success = false
+      @errors << "Order not found"
     end
 
     def handle_fetch_orders
