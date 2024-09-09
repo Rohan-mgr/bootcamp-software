@@ -19,6 +19,16 @@ module CustomerBranches
       self
     end
 
+    def execute_branch_updation
+      handle_update_customer_branch
+      self
+    end
+
+    def execute_branch_deletion
+      handle_delete_customer_branch
+      self
+    end
+
     def success?
       @success || @errors.empty?
     end
@@ -64,6 +74,52 @@ module CustomerBranches
       @success = false
       @errors << err.message
     end
+
+    def handle_update_customer_branch
+      begin
+        customer_branch = CustomerBranch.find(params[:customer_branch_id])
+          if customer_branch.present?
+            customer_branch.update!(customer_branch_params)
+            @branch = customer_branch
+            @success = true
+            @errors = []
+          else
+            @success = false
+            @errors << "Customer Branch not found"
+          end
+      rescue ActiveRecord::ActiveRecordError => err
+        @success = false
+        @errors = [ err.message ]
+      end
+    end
+
+    def handle_delete_customer_branch
+      begin
+        customer_branch = CustomerBranch.find(params[:id])
+        # if current_user.admin? 
+          if customer_branch.destroy!
+            @branch = customer_branch
+            @success = true
+            @errors = []
+          else
+            @success = false
+            @errors = @branch
+          end
+        # else
+        #   @success = true
+        #   @errors = [ "Sorry! You don't have permisssion to delete the customer branch. " ]
+        # end
+      rescue ActiveRecord::ActiveRecordError => err
+        @success = true
+        @errors = [ err.message ]
+      end
+    end
+
+    # def current_user
+    #   current_user = params[:current_user]
+    #   @current_user ||= current_user
+    # end
+
 
     def customer_branch_params
       ActionController::Parameters.new(params).permit(:name, :location, :customer_id)
