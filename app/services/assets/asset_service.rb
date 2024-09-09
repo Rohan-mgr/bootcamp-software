@@ -90,7 +90,7 @@ module Assets
           @success = false
           @errors << "You are not authorized to perform this action"
         end
-      rescue ActiveRecord::RecordNotDestroyed => err
+      rescue ActiveRecord::RecordInvalid => err
           @success = false
           @errors << err.message
       end
