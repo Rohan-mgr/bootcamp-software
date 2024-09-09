@@ -58,7 +58,6 @@ module Products
     def create_product
       ActiveRecord::Base.transaction do
         @product = Product.new(product_params.merge(user_id: current_user.id))
-        # debugger
         if @product.save!
           @success = true
           @errors = []
@@ -83,18 +82,16 @@ module Products
           else
             @success = false
             @errors = @product.errors.full_messages
-            # raise ActiveRecord::Rollback
           end
         else
           @success = false
           @errors = [ "Sorry! You do not have permission to update this product." ]
-          # raise ActiveRecord::Rollback
         end
       end
 
     rescue ActiveRecord::RecordInvalid => err
       @success = false
-      @erroparamsrs << err.message
+      @errors << err.message
     rescue ActiveRecord::RecordNotFound => err
       @success = false
       @errors << err.message

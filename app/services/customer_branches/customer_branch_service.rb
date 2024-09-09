@@ -75,7 +75,6 @@ module CustomerBranches
       @errors << err.message
     end
 
-    # yo mailey gareko
     def handle_update_customer_branch
       begin
         customer_branch = CustomerBranch.find(params[:customer_branch_id])

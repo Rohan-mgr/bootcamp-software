@@ -9,7 +9,6 @@ module Mutations
       def resolve(branch_info: {})
         begin
           customer_branch_service = ::CustomerBranches::CustomerBranchService.new(branch_info.to_h).execute_branch_updation
-          # garna baki xa
           if customer_branch_service.success?
             {
               customer_branch: customer_branch_service.branch,
