@@ -3,4 +3,6 @@ class Driver < ApplicationRecord
 
   belongs_to :user
   acts_as_tenant :organization
+
+  belongs_to :delivery_order
 end

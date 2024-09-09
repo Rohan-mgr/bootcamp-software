@@ -18,5 +18,8 @@ module Types
    field :create_driver, description: "Mutation for creating driver", mutation: Mutations::Drivers::CreateDriver
    field :delete_driver, description: "Mutation for deleting driver", mutation: Mutations::Drivers::DeleteDriver
    field :edit_driver, description: "Mutation for Editing driver", mutation: Mutations::Drivers::EditDriver
+   field :create_order, description: "Mutation for creating orders", mutation: Mutations::Orders::CreateOrder
+   field :delete_order, description: "Mutation for deleting order", mutation: Mutations::Orders::DeleteOrder
+   field :edit_order, description: "Mutation for editing the order", mutation: Mutations::Orders::UpdateOrder
   end
 end

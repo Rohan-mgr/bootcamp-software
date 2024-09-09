@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_09_061900) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_09_173633) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,22 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_09_061900) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "delivery_orders", force: :cascade do |t|
+    t.datetime "planned_at", null: false
+    t.string "status", null: false
+    t.datetime "completed_at"
+    t.bigint "customer_branch_id", null: false
+    t.bigint "order_group_id", null: false
+    t.bigint "asset_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "driver_id"
+    t.index ["asset_id"], name: "index_delivery_orders_on_asset_id"
+    t.index ["customer_branch_id"], name: "index_delivery_orders_on_customer_branch_id"
+    t.index ["driver_id"], name: "index_delivery_orders_on_driver_id"
+    t.index ["order_group_id"], name: "index_delivery_orders_on_order_group_id"
+  end
+
   create_table "drivers", force: :cascade do |t|
     t.string "name"
     t.string "phone"
@@ -55,6 +71,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_09_061900) do
     t.index ["user_id"], name: "index_drivers_on_user_id"
   end
 
+  create_table "line_items", force: :cascade do |t|
+    t.string "name", null: false
+    t.float "quantity", null: false
+    t.string "units", null: false
+    t.bigint "delivery_order_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["delivery_order_id"], name: "index_line_items_on_delivery_order_id"
+  end
+
   create_table "memberships", force: :cascade do |t|
     t.bigint "customer_id", null: false
     t.bigint "organization_id", null: false
@@ -62,6 +88,20 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_09_061900) do
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_memberships_on_customer_id"
     t.index ["organization_id"], name: "index_memberships_on_organization_id"
+  end
+
+  create_table "order_groups", force: :cascade do |t|
+    t.string "status", default: "pending", null: false
+    t.datetime "started_at"
+    t.datetime "completed_at"
+    t.bigint "customer_id", null: false
+    t.bigint "organization_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_order_groups_on_customer_id"
+    t.index ["organization_id"], name: "index_order_groups_on_organization_id"
+    t.index ["user_id"], name: "index_order_groups_on_user_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -104,10 +144,18 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_09_061900) do
   add_foreign_key "assets", "organizations"
   add_foreign_key "assets", "users"
   add_foreign_key "customer_branches", "customers"
+  add_foreign_key "delivery_orders", "assets"
+  add_foreign_key "delivery_orders", "customer_branches"
+  add_foreign_key "delivery_orders", "drivers"
+  add_foreign_key "delivery_orders", "order_groups"
   add_foreign_key "drivers", "organizations"
   add_foreign_key "drivers", "users"
+  add_foreign_key "line_items", "delivery_orders"
   add_foreign_key "memberships", "customers"
   add_foreign_key "memberships", "organizations"
+  add_foreign_key "order_groups", "customers"
+  add_foreign_key "order_groups", "organizations"
+  add_foreign_key "order_groups", "users"
   add_foreign_key "products", "organizations"
   add_foreign_key "products", "users"
   add_foreign_key "users", "organizations"

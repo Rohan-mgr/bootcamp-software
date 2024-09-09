@@ -26,5 +26,6 @@ module Types
     field :get_assets, description: "Resolver for fetching Organization assets", resolver: Resolvers::Assets::GetAssets
     field :find_products, description: "Resovler for the product fetching", resolver: Resolvers::Products::ProductResolver
     field :get_drivers, description: "Resolver for fetching Organization drivers", resolver: Resolvers::Drivers::GetDrivers
+    field :get_orders, description: "Resolver for fetching the orders", resolver: Resolvers::Orders::GetOrders
   end
 end
