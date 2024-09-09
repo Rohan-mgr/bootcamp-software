@@ -7,6 +7,7 @@ module Types
       argument :customer_branch_id, ID, required: false
       argument :order_group_id, ID, required: false
       argument :asset_id, ID, required: false
+      argument :driver_id, ID, required: false
       argument :line_items_attributes, [ Types::InputObjects::LineItemsInputType ], required: true
     end
   end

@@ -129,7 +129,7 @@ module Orders
 
     def order_params
       ActionController::Parameters.new(params).permit(:status, :started_at, :completed_at, :customer_id,
-        delivery_order_attributes: [ :planned_at, :status, :completed_at, :customer_branch_id, :asset_id,
+        delivery_order_attributes: [ :planned_at, :status, :completed_at, :customer_branch_id, :asset_id, :driver_id,
           line_items_attributes: [ :name, :quantity, :units ]
         ]
       )
