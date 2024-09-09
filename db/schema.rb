@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_04_080552) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_09_061900) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,19 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_04_080552) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "drivers", force: :cascade do |t|
+    t.string "name"
+    t.string "phone"
+    t.string "email"
+    t.string "status"
+    t.bigint "organization_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["organization_id"], name: "index_drivers_on_organization_id"
+    t.index ["user_id"], name: "index_drivers_on_user_id"
   end
 
   create_table "memberships", force: :cascade do |t|
@@ -91,6 +104,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_04_080552) do
   add_foreign_key "assets", "organizations"
   add_foreign_key "assets", "users"
   add_foreign_key "customer_branches", "customers"
+  add_foreign_key "drivers", "organizations"
+  add_foreign_key "drivers", "users"
   add_foreign_key "memberships", "customers"
   add_foreign_key "memberships", "organizations"
   add_foreign_key "products", "organizations"

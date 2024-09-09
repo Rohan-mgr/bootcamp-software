@@ -15,5 +15,8 @@ module Types
    field :create_asset, description: "Mutation for creating asset", mutation: Mutations::Assets::CreateAsset
    field :delete_asset, description: "Mutation for deleting asset", mutation: Mutations::Assets::DeleteAsset
    field :edit_asset, description: "Mutation for editing asset", mutation: Mutations::Assets::EditAsset
+   field :create_driver, description: "Mutation for creating driver", mutation: Mutations::Drivers::CreateDriver
+   field :delete_driver, description: "Mutation for deleting driver", mutation: Mutations::Drivers::DeleteDriver
+   field :edit_driver, description: "Mutation for Editing driver", mutation: Mutations::Drivers::EditDriver
   end
 end

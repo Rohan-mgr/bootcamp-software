@@ -42,3 +42,5 @@ Asset.create([
     user_id: 2
   }
 ])
+
+
