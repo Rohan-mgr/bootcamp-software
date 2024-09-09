@@ -25,5 +25,6 @@ module Types
     field :get_customer_branch, description: "Resolvers for getting customer branches", resolver: Resolvers::CustomersBranch::GetCustomerBranch
     field :get_assets, description: "Resolver for fetching Organization assets", resolver: Resolvers::Assets::GetAssets
     field :find_products, description: "Resovler for the product fetching", resolver: Resolvers::Products::ProductResolver
+    field :get_drivers, description: "Resolver for fetching Organization drivers", resolver: Resolvers::Drivers::GetDrivers
   end
 end
