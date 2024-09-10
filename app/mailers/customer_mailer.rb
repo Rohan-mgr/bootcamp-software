@@ -3,6 +3,6 @@ class CustomerMailer < ApplicationMailer
     @customer = customer
     @order = order
     @organization = organization
-    mail(to: "pkonami696@gmail.com", from: "Bootcamp SAAS", subject: "Information about order deletion")
+    mail(to: @customer[:email], from: "Bootcamp SAAS", subject: "Information about order deletion")
   end
 end
