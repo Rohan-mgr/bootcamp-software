@@ -4,7 +4,7 @@ module Types
   module Orders
     class OrderType < Types::BaseObject
       field :id, ID, null: false
-      field :status, String, null: false
+      field :status, Enums::Orders::OrderStatusEnum, null: false
       field :started_at, GraphQL::Types::ISO8601DateTime
       field :completed_at, GraphQL::Types::ISO8601DateTime
       field :customer_id, ID, null: false

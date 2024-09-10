@@ -5,7 +5,7 @@ module Types
     class DeliveryOrderType < Types::BaseObject
       field :id, ID, null: false
       field :planned_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :status, String, null: false
+      field :status, Enums::Orders::OrderStatusEnum, null: false
       field :completed_at, GraphQL::Types::ISO8601DateTime
       field :customer_branch_id, Integer, null: false
       field :order_group_id, Integer, null: false
