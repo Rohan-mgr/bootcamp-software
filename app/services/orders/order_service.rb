@@ -104,6 +104,10 @@ module Orders
             @success = true
             @errors = []
             @order = serialize_order(order_group)
+
+            organization = ActsAsTenant.current_tenant
+            customer = order_group.customer
+            CustomerMailer.order_deletion_email(customer, @order, organization).deliver_later
           else
             @success = false
             @errors << order_group.errors.full_messages
@@ -124,8 +128,13 @@ module Orders
     end
 
     def serialize_order(order)
-      order.as_json(include: { delivery_order: { include: :line_items } })
+      if order.respond_to?(:map)
+        order.map { |o| o.as_json(include: { delivery_order: { include: :line_items } }).deep_symbolize_keys }
+      else
+        order.as_json(include: { delivery_order: { include: :line_items } }).deep_symbolize_keys
+      end
     end
+
 
     def order_params
       ActionController::Parameters.new(params).permit(:status, :started_at, :completed_at, :customer_id,
