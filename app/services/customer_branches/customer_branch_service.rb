@@ -77,7 +77,7 @@ module CustomerBranches
 
     def handle_update_customer_branch
       begin
-        customer_branch = CustomerBranch.find(params[:customer_branch_id])
+        customer_branch = CustomerBranch.find(params[:id])
           if customer_branch.present?
             customer_branch.update!(customer_branch_params)
             @branch = customer_branch
@@ -115,10 +115,10 @@ module CustomerBranches
       end
     end
 
-    # def current_user
-    #   current_user = params[:current_user]
-    #   @current_user ||= current_user
-    # end
+    def current_user
+      current_user = params[:current_user]
+      @current_user ||= current_user
+    end
 
 
     def customer_branch_params
