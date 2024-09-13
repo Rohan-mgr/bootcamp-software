@@ -7,4 +7,6 @@ class Organization < ApplicationRecord
   has_many :products, dependent: :destroy
   has_many :drivers, dependent: :destroy
   has_many :order_groups, dependent: :destroy
+
+  has_many :categories, dependent: :destroy
 end

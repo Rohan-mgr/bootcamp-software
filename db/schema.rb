@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_09_173633) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_11_052920) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,6 +25,17 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_09_173633) do
     t.index ["asset_id"], name: "index_assets_on_asset_id", unique: true
     t.index ["organization_id"], name: "index_assets_on_organization_id"
     t.index ["user_id"], name: "index_assets_on_user_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.string "category_class"
+    t.bigint "user_id", null: false
+    t.bigint "organization_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_categories_on_organization_id"
+    t.index ["user_id"], name: "index_categories_on_user_id"
   end
 
   create_table "customer_branches", force: :cascade do |t|
@@ -147,6 +158,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_09_173633) do
 
   add_foreign_key "assets", "organizations"
   add_foreign_key "assets", "users"
+  add_foreign_key "categories", "organizations"
+  add_foreign_key "categories", "users"
   add_foreign_key "customer_branches", "customers"
   add_foreign_key "delivery_orders", "assets"
   add_foreign_key "delivery_orders", "customer_branches"
