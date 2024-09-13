@@ -8,6 +8,7 @@ module Types
       field :started_at, GraphQL::Types::ISO8601DateTime
       field :completed_at, GraphQL::Types::ISO8601DateTime
       field :customer_id, ID, null: false
+      field :recurring, Types::Orders::RecurringType, null: true
       field :organization_id, ID, null: false
       field :user_id, ID, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false

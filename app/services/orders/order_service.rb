@@ -42,10 +42,12 @@ module Orders
     def handle_create_order
       ActiveRecord::Base.transaction do
         order_group = OrderGroup.new(order_params.merge(user_id: user.id))
+        order_group.set_recurring_details(params[:recurring]) if !params[:recurring].nil?
         if order_group.save!
           @success = true
           @errors = []
           @order = serialize_order(order_group)
+          schedule_recurring_orders(order_group) if order_group.recurring?
         else
           @success = false
           @errors << order_group.errors.full_messages
@@ -127,6 +129,10 @@ module Orders
       user ||= current_user
     end
 
+    def schedule_recurring_orders(order_group)
+      RecurringOrderJob.perform_async(order_group.id)
+    end
+
     def serialize_order(order)
       if order.respond_to?(:map)
         order.map { |o| o.as_json(include: { delivery_order: { include: :line_items } }).deep_symbolize_keys }
@@ -137,7 +143,7 @@ module Orders
 
 
     def order_params
-      ActionController::Parameters.new(params).permit(:status, :started_at, :completed_at, :customer_id,
+      ActionController::Parameters.new(params).permit(:status, :started_at, :completed_at, :customer_id, :recurring,
         delivery_order_attributes: [ :planned_at, :status, :completed_at, :customer_branch_id, :asset_id, :driver_id,
           line_items_attributes: [ :name, :quantity, :units ]
         ]
