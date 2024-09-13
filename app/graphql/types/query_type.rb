@@ -27,5 +27,6 @@ module Types
     field :find_products, description: "Resovler for the product fetching", resolver: Resolvers::Products::ProductResolver
     field :get_drivers, description: "Resolver for fetching Organization drivers", resolver: Resolvers::Drivers::GetDrivers
     field :get_orders, description: "Resolver for fetching the orders", resolver: Resolvers::Orders::GetOrders
+    field :get_categories, description: "Resolver for fetching thr orders", resolver: Resolvers::Categories::GetCategory
   end
 end

@@ -23,5 +23,8 @@ module Types
    field :create_customer, description: "Mutation for creating customer", mutation: Mutations::Customers::CreateCustomer
    field :update_customer, description: "Mutation for updating customer", mutation: Mutations::Customers::UpdateCustomer
    field :delete_customer, description: "Mutation for deleting customer", mutation: Mutations::Customers::DeleteCustomer
+   field :create_category, description: "Mutation for creating category", mutation: Mutations::Categories::CreateCategory
+   field :delete_category, description: "Mutation for deleting category", mutation: Mutations::Categories::DeleteCategory
+   field :edit_category, description: "Mutation for editing category", mutation: Mutations::Categories::EditCategory
   end
 end
