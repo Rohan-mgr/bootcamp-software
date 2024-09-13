@@ -79,7 +79,7 @@ module Assets
       ActiveRecord::Base.transaction do
         @asset = Asset.find_by!(id: params[:id])
         if user.present? && user.admin?
-          if @asset.update!(asset_params)
+          if @asset.update!(asset_params.except(:asset_id))
             @success = true
             @errors = []
           else
