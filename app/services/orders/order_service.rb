@@ -134,17 +134,30 @@ module Orders
     end
 
     def serialize_order(order)
+      serialized_data = {
+        customer: {},
+        delivery_order: {
+          include: {
+            driver: {},
+            customer_branch: {},
+            asset: {},
+            line_items: {}
+          },
+          except: [ :driver_id, :customer_branch_id, :asset_id ]
+        }
+      }
+
       if order.respond_to?(:map)
-        order.map { |o| o.as_json(include: { delivery_order: { include: :line_items } }).deep_symbolize_keys }
+        order.map { |o| o.as_json(include: serialized_data, except: [ :customer_id ]).deep_symbolize_keys }
       else
-        order.as_json(include: { delivery_order: { include: :line_items } }).deep_symbolize_keys
+        order.as_json(include: serialized_data, except: [ :customer_id ]).deep_symbolize_keys
       end
     end
 
 
     def order_params
       ActionController::Parameters.new(params).permit(:status, :started_at, :completed_at, :customer_id, :recurring,
-        delivery_order_attributes: [ :planned_at, :status, :completed_at, :customer_branch_id, :asset_id, :driver_id,
+        delivery_order_attributes: [ :planned_at, :completed_at, :customer_branch_id, :asset_id, :driver_id,
           line_items_attributes: [ :name, :quantity, :units ]
         ]
       )
