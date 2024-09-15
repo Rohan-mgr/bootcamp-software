@@ -24,6 +24,7 @@ class RecurringOrderJob
     new_order.created_at = scheduled_date
     new_order.updated_at = scheduled_date
     new_order.status = "pending"
+    new_order.parent_order_id = original_order.id
 
     new_delivery_order = original_order.delivery_order.dup
     new_delivery_order.planned_at = scheduled_date
