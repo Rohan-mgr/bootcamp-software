@@ -10,6 +10,7 @@ module Types
       field :customer, Customers::CustomerType, null: false
       field :recurring, Types::Orders::RecurringType, null: true
       field :organization_id, ID, null: false
+      field :parent_order_id, ID, null: true
       field :user_id, ID, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
