@@ -1,5 +1,4 @@
 class Asset < ApplicationRecord
-  include Asset::AssetCategoryEnum
   include Asset::AssetStatusEnum
 
   belongs_to :user
