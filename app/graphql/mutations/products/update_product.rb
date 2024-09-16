@@ -2,13 +2,14 @@ module Mutations
   module Products
     class UpdateProduct < BaseMutation
       argument :product_info, Types::InputObjects::ProductInputType, required: true
+      argument :id, ID, required: true
 
       field :product, Types::Products::ProductType, null: true
       field :errors, [ String ], null: true
 
-      def resolve(product_info: {})
+      def resolve(id:, product_info: {})
         begin
-          product_service = ::Products::ProductService.new(product_info.to_h.merge(current_user: context[:current_user])).execute_update_product
+          product_service = ::Products::ProductService.new(product_info.to_h.merge(id: id, current_user: context[:current_user])).execute_update_product
 
           if product_service.success?
             {
