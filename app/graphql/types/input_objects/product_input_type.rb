@@ -3,7 +3,7 @@ module Types
     class ProductInputType < BaseInputObject
       argument :id, ID, required: false
       argument :name, String, required: true
-      argument :product_category, Types::Enums::Categories::CategoryClassEnum, required: true
+      argument :product_category, String, required: true
       argument :product_status, Enums::Products::ProductStatusEnum, required: true
       argument :product_unit, Enums::Products::ProductUnitEnum, required: true
     end
