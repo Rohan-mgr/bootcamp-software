@@ -5,7 +5,7 @@ module Types
     class ProductType < Types::BaseObject
       field :id, ID, null: false
       field :name, String
-      field :product_category, Enums::Products::ProductCategoryEnum
+      field :product_category, String
       field :product_status, Enums::Products::ProductStatusEnum
       field :product_unit, Enums::Products::ProductUnitEnum
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
