@@ -24,6 +24,11 @@ module Orders
       self
     end
 
+    def execute_fetch_recurring_orders
+      handle_fetch_recurring_orders
+      self
+    end
+
     def execute_order_deletion
       handle_delete_order
       self
@@ -95,7 +100,7 @@ module Orders
 
     def handle_fetch_orders
       begin
-        order_group = OrderGroup.order(created_at: :DESC)
+        order_group = OrderGroup.order(created_at: :DESC).where(parent_order_id: nil)
         if order_group.empty?
           @success = false
           @errors << "No orders created yet"
@@ -145,6 +150,23 @@ module Orders
       child_orders.each do |child_order|
         child_order.update!(order_params)
       end
+    end
+
+    def handle_fetch_recurring_orders
+      begin
+        recurring_orders = OrderGroup.recurring_orders
+        if recurring_orders.empty?
+          @success = false
+          @errors << "No recurring orders created yet"
+        else
+          @success = true
+          @errors = []
+          @orders = serialize_order(recurring_orders)
+        end
+      end
+    rescue ActiveRecord::ActiveRecordError => err
+      @success = false
+      @errors << err.message
     end
 
 
