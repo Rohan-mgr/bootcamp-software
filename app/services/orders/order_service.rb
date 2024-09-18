@@ -67,7 +67,7 @@ module Orders
     def handle_update_order
         begin
           order_group = OrderGroup.find(params[:order_id])
-          if user.admin? && user.id == order_group.user_id
+          if user.admin?
             ActiveRecord::Base.transaction do
               if order_group.recurring?
                 # Update all recurring child orders, if any
@@ -118,18 +118,21 @@ module Orders
     def handle_delete_order
       begin
         order_group = OrderGroup.find(params[:order_id])
-        if user.admin? && user.id == order_group.user_id
-          if order_group.destroy!
-            @success = true
-            @errors = []
-            @order = serialize_order(order_group)
-
-            organization = ActsAsTenant.current_tenant
-            customer = order_group.customer
-            CustomerMailer.order_deletion_email(customer, @order, organization).deliver_later
+        if user.admin?
+          if order_group.recurring?
+            delete_recurring_orders(order_group)
           else
-            @success = false
-            @errors << order_group.errors.full_messages
+            if order_group.destroy!
+              @success = true
+              @errors = []
+              @order = serialize_order(order_group)
+
+              customer = order_group.customer
+              CustomerMailer.order_deletion_email(customer, @order, current_tenant).deliver_later
+            else
+              @success = false
+              @errors << order_group.errors.full_messages
+            end
           end
         else
           @success = false
@@ -152,6 +155,20 @@ module Orders
       end
     end
 
+    def delete_recurring_orders(parent_order)
+      parent_order.destroy! if parent_order.status != "completed"
+
+      customer = parent_order.customer
+      order = serialize_order(parent_order)
+      CustomerMailer.order_deletion_email(customer, order, current_tenant).deliver_later
+
+      child_orders = OrderGroup.where(parent_order_id: parent_order.id).where.not(status: "completed")
+
+      child_orders.each do |child_order|
+        child_order.destroy!
+      end
+    end
+
     def handle_fetch_recurring_orders
       begin
         recurring_orders = OrderGroup.recurring_orders
@@ -169,6 +186,9 @@ module Orders
       @errors << err.message
     end
 
+   def current_tenant
+    current_tenant ||= ActsAsTenant.current_tenant
+   end
 
     def user
       current_user = params[:current_user]
