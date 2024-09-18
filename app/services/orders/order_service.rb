@@ -100,7 +100,7 @@ module Orders
 
     def handle_fetch_orders
       begin
-        order_group = OrderGroup.order(created_at: :DESC).where(parent_order_id: nil)
+        order_group = OrderGroup.order(created_at: :DESC).where(parent_order_id: nil, recurring: nil)
         if order_group.empty?
           @success = false
           @errors << "No orders created yet"
