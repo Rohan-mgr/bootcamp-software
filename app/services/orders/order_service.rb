@@ -206,6 +206,7 @@ module Orders
     def serialize_order(order)
       serialized_data = {
         customer: {},
+        user: {},
         delivery_order: {
           include: {
             driver: {},
@@ -220,7 +221,7 @@ module Orders
       if order.respond_to?(:map)
         order.map { |o| o.as_json(include: serialized_data, except: [ :customer_id ]).deep_symbolize_keys }
       else
-        order.as_json(include: serialized_data, except: [ :customer_id ]).deep_symbolize_keys
+        order.as_json(include: serialized_data, except: [ :customer_id, :user_id ]).deep_symbolize_keys
       end
     end
 
