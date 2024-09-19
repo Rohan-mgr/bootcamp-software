@@ -53,9 +53,8 @@ module Orders
           @errors = []
           @order = serialize_order(order_group)
 
-          organization = ActsAsTenant.current_tenant
           customer = order_group.customer
-          CustomerMailer.order_creation_email(customer, @order, organization).deliver_later
+          CustomerMailer.order_creation_email(customer, @order, current_tenant).deliver_later
 
           schedule_recurring_orders(order_group) if order_group.recurring?
         else
