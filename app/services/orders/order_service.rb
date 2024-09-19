@@ -52,6 +52,11 @@ module Orders
           @success = true
           @errors = []
           @order = serialize_order(order_group)
+
+          organization = ActsAsTenant.current_tenant
+          customer = order_group.customer
+          CustomerMailer.order_creation_email(customer, @order, organization).deliver_later
+
           schedule_recurring_orders(order_group) if order_group.recurring?
         else
           @success = false
@@ -219,6 +224,8 @@ module Orders
         order.as_json(include: serialized_data, except: [ :customer_id ]).deep_symbolize_keys
       end
     end
+
+
 
 
     def order_params
