@@ -57,7 +57,6 @@ module Drivers
         ActiveRecord::Base.transaction do
           @driver = Driver.find_by!(id: params[:id])
           if @driver && user.present? && user.admin?
-            driver.delivery_order.update(driver_id: nil)
               if @driver.destroy
                 @success = true
                 @errors = []
