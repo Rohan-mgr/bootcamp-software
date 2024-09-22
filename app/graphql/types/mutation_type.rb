@@ -26,5 +26,6 @@ module Types
    field :create_category, description: "Mutation for creating category", mutation: Mutations::Categories::CreateCategory
    field :delete_category, description: "Mutation for deleting category", mutation: Mutations::Categories::DeleteCategory
    field :edit_category, description: "Mutation for editing category", mutation: Mutations::Categories::EditCategory
+   field :upload_order, description: "Mutation for uploading order from csv file", mutation: Mutations::Orders::OrderCsvUpload
   end
 end

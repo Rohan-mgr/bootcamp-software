@@ -55,3 +55,4 @@ gem "acts_as_tenant", "~> 1.0"
 
 gem "sidekiq", "~> 7.3"
 gem "sidekiq-scheduler", "~> 5.0", ">= 5.0.6"
+gem "csv", "~> 3.0"
