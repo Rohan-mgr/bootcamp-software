@@ -7,6 +7,7 @@ module Types
       field :status, Enums::Orders::OrderStatusEnum, null: false
       field :started_at, GraphQL::Types::ISO8601DateTime
       field :completed_at, GraphQL::Types::ISO8601DateTime
+      field :cancelled_at, GraphQL::Types::ISO8601DateTime
       field :customer, Customers::CustomerType, null: false
       field :recurring, Types::Orders::RecurringType, null: true
       field :organization_id, ID, null: false
