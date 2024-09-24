@@ -84,7 +84,7 @@ module Categories
       @category = Category.find_by!(id: params[:id])
 
       if @category && user.present? && user.admin?
-        if @category.destroy
+        if @category.destroy!
           @success = true
           @errors = []
         else

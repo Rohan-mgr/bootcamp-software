@@ -4,5 +4,5 @@ class Driver < ApplicationRecord
   belongs_to :user
   acts_as_tenant :organization
 
-  has_many :delivery_order, dependent: :nullify
+  has_many :delivery_orders, dependent: :nullify
 end

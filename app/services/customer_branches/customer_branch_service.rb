@@ -96,22 +96,22 @@ module CustomerBranches
     def handle_delete_customer_branch
       begin
         customer_branch = CustomerBranch.find(params[:id])
-        # if current_user.admin? 
+        if current_user.admin?
           if customer_branch.destroy!
             @branch = customer_branch
             @success = true
             @errors = []
           else
             @success = false
-            @errors = @branch
+            @errors = customer_branch.errors.full_messages
           end
-        # else
-        #   @success = true
-        #   @errors = [ "Sorry! You don't have permisssion to delete the customer branch. " ]
-        # end
+        else
+          @success = false
+          @errors = [ "Sorry! You don't have permisssion to delete the customer branch. " ]
+        end
       rescue ActiveRecord::ActiveRecordError => err
-        @success = true
-        @errors = [ err.message ]
+        @success = false
+        @errors << err.message
       end
     end
 
