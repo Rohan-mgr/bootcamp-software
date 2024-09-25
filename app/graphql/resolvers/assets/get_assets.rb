@@ -5,20 +5,22 @@ module Resolvers
 
       def resolve
         begin
-            assets = Asset.order(created_at: :DESC)
-            {
-              assets: assets,
+           asset_service = ::Assets::AssetService.new.execte_fetch_assets
+
+           if asset_service.success?
+             {
+              assets: asset_service.assets,
               errors: []
-            }
-          # end
-
-        rescue GraphQL::ExecutionError => err
-          {
-            assets: [],
-            errors: [ err.message ]
-          }
-
+             }
+           else
+              raise asset_service.errors
+           end
         end
+      rescue GraphQL::ExecutionError => err
+        {
+          assets: nil,
+          errors: [ err.message ]
+        }
       end
     end
   end

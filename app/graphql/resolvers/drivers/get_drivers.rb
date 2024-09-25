@@ -5,19 +5,21 @@ module Resolvers
 
       def resolve
         begin
-            drivers = Driver.order(created_at: :DESC)
+          driver_service = ::Drivers::DriverService.new.execute_fetch_driver
+          if driver_service.success?
             {
-              drivers: drivers,
+              drivers: driver_service.driver,
               errors: []
             }
-
-        rescue GraphQL::ExecutionError => err
-          {
-            assets: [],
-            errors: [ err.message ]
-          }
-
+          else
+              raise driver_service.errors
+          end
         end
+      rescue GraphQL::ExecutionError => err
+        {
+          drivers: nil,
+          errors: [ err.message ]
+        }
       end
     end
   end

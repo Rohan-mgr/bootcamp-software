@@ -5,17 +5,22 @@ module Resolvers
 
       def resolve
         begin
-          products = Product.order(created_at: :DESC)
-          {
-            products: products,
-            errors: []
-          }
-        rescue GraphQL::ExecutionError => err
-          {
-            products: nil,
-            errors: [ err.message ]
-          }
+          product_service = ::Products::ProductService.new.execute_find_product
+
+          if product_service.success?
+            {
+              products: product_service.products,
+              errors: []
+            }
+          else
+            raise product_service.errors
+          end
         end
+      rescue GraphQL::ExecutionError => err
+        {
+          products: nil,
+          errors: [ err.message ]
+        }
       end
     end
   end
