@@ -41,8 +41,8 @@ module Drivers
 
       def handle_driver_creation
         if user.present? && user.admin?
-          @drivers = Driver.new(driver_params.merge(user_id: user.id))
-            if @drivers.save!
+          @driver = Driver.new(driver_params.merge(user_id: user.id))
+            if @driver.save!
               @success = true
               @errors = []
             else
@@ -108,8 +108,8 @@ module Drivers
     end
 
     def handle_fetch_driver
-      @driver = Driver.order(created_at: :DESC)
-      if @driver.empty?
+      @drivers = Driver.order(created_at: :DESC)
+      if @drivers.empty?
           @success = true
           @errors << "No driver created yet"
       else

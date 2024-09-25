@@ -8,7 +8,7 @@ module Resolvers
           driver_service = ::Drivers::DriverService.new.execute_fetch_driver
           if driver_service.success?
             {
-              drivers: driver_service.driver,
+              drivers: driver_service.drivers,
               errors: []
             }
           else
