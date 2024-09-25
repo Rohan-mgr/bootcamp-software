@@ -45,25 +45,31 @@ module Orders
     private
 
     def handle_create_order
-      ActiveRecord::Base.transaction do
-        order_group = OrderGroup.new(order_params.merge(user_id: user.id))
-        order_group.set_recurring_details(params[:recurring]) if !params[:recurring].nil?
-        if order_group.save!
-          @success = true
-          @errors = []
-          @order = serialize_order(order_group)
+      begin
+        if user.admin?
+          order_group = OrderGroup.new(order_params.merge(user_id: user.id))
 
-          customer = order_group.customer
-          CustomerMailer.order_creation_email(customer, @order, current_tenant).deliver_later
+          order_group.set_recurring_details(params[:recurring]) if !params[:recurring].nil?
 
-          schedule_recurring_orders(order_group) if order_group.recurring?
+          if order_group.save!
+            @success = true
+            @errors = []
+            @order = serialize_order(order_group)
+
+            customer = order_group.customer
+            CustomerMailer.order_creation_email(customer, @order, current_tenant).deliver_later
+
+            schedule_recurring_orders(order_group) if order_group.recurring?
+          else
+            @success = false
+            @errors = @order_group.errors.full_messages
+          end
         else
           @success = false
-          @errors << order_group.errors.full_messages
+          @errors << "You are not authorized to perform this action"
         end
       end
-
-    rescue ActiveRecord::Rollback => err
+    rescue ActiveRecord::Rollback, ActiveRecord::RecordInvalid => err
       @success = false
       @errors << err.message
     end
