@@ -9,7 +9,7 @@ module Products
       @errors = []
     end
 
-    def execute
+    def execute_find_product
       find_products
       self
     end
@@ -45,9 +45,13 @@ module Products
     def find_products
       begin
         @products = Product.all.reverse
-
-        @success = true
-        @errors = []
+        if @products.empty?
+          @success = true
+          @errors << "No product created yet"
+        else
+          @success = true
+          @errors = []
+        end
       end
 
     rescue ActiveRecord::Rollback => err

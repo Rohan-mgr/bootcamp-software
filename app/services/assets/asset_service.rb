@@ -1,7 +1,7 @@
 module Assets
   class AssetService
     attr_reader :params
-    attr_accessor :success, :errors, :asset
+    attr_accessor :success, :errors, :asset, :assets
 
     def initialize(params = {})
       @params = params
@@ -11,6 +11,11 @@ module Assets
 
     def execute_create_asset
       handle_asset_creation
+      self
+    end
+
+    def execte_fetch_assets
+      handle_fetch_asset
       self
     end
 
@@ -94,6 +99,21 @@ module Assets
           @success = false
           @errors << err.message
       end
+    end
+
+    def handle_fetch_asset
+      @assets = Asset.order(created_at: :DESC)
+
+      if @assets.empty?
+        @success = true
+        @errors << "No asset created yet"
+      else
+        @success = true
+        @errors = []
+      end
+    rescue ActiveRecord::ActiveRecordError => err
+      @success = false
+      @errors << [ err.message ]
     end
 
     def user

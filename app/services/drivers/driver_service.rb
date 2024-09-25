@@ -1,7 +1,7 @@
 module Drivers
   class DriverService
     attr_reader :params
-    attr_accessor :success, :errors, :driver
+    attr_accessor :success, :errors, :driver, :drivers
 
     def initialize(params = {})
       @params = params
@@ -21,6 +21,11 @@ module Drivers
 
     def execute_edit_driver
       handle_driver_edit
+      self
+    end
+
+    def execute_fetch_driver
+      handle_fetch_driver
       self
     end
 
@@ -101,6 +106,21 @@ module Drivers
         @errors = [ err.message ]
       end
     end
+
+    def handle_fetch_driver
+      @drivers = Driver.order(created_at: :DESC)
+      if @drivers.empty?
+          @success = true
+          @errors << "No driver created yet"
+      else
+        @success = true
+        @errors = []
+      end
+    rescue ActiveRecord::ActiveRecordError => err
+      @success = false
+      @errors = [ err.message ]
+    end
+
     def user
       current_user = params[:current_user]
       @user ||= current_user
