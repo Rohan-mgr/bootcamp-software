@@ -14,10 +14,7 @@ module Mutations
                 errors: []
               }
             else
-              {
-                driver: nil,
-                errors: [ driver_service.errors ]
-              }
+              raise driver_service.errors
             end
         end
       rescue GraphQL::ExecutionError => e

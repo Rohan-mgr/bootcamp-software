@@ -14,10 +14,7 @@ module Resolvers
                 errors: []
               }
             else
-              {
-                categories: nil,
-                errors: [ category_service.errors ]
-              }
+             raise category_service.errors
             end
           end
         rescue GraphQL::ExecutionError => err

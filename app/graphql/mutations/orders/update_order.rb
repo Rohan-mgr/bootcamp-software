@@ -16,10 +16,7 @@ module Mutations
               errors: []
             }
           else
-            {
-              message: "Failed to update order!",
-              errors: [ order_service.errors ]
-            }
+            raise order_service.errors
           end
         end
       rescue GraphQL::ExecutionError => err

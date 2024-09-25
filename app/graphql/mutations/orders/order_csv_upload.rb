@@ -41,7 +41,7 @@ module Mutations
         if results[:errors].empty?
           results[:message] = "All orders created successfully"
         else
-          results[:message] = "Some orders failed to create"
+          raise "Some orders failed to create"
         end
 
         results

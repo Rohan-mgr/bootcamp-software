@@ -18,10 +18,7 @@ module Mutations
               errors: []
             }
           else
-            {
-              message: "Failed to create customer branch",
-              errors: [ customer_branch_service.errors ]
-            }
+            raise customer_branch_service.errors
           end
         end
 

@@ -19,10 +19,7 @@ module Mutations
               errors: []
             }
           else
-            {
-              message: "Failed to edit",
-              errors: [ asset_service.errors ]
-            }
+            raise asset_service.errors
           end
         end
       rescue GraphQL::ExecutionError => e

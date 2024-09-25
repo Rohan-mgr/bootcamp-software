@@ -17,11 +17,7 @@ module Mutations
               errors: []
             }
           else
-            {
-              category: nil,
-              message: "Unable to delete category",
-              errors: [ category_service.errors ]
-            }
+            raise category_service.errors
           end
         end
       rescue GraphQL::ExecutionError =>e

@@ -16,11 +16,7 @@ module Mutations
               errors: []
             }
           else
-            {
-              category: nil,
-              errors: [ category_service.errors ]
-            }
-
+            raise category_service.errors
           end
         end
       rescue  GraphQL::ExecutionError => e

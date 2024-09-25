@@ -15,10 +15,7 @@ module Mutations
               errors: []
             }
           else
-            {
-              order: nil,
-              errrors: [ order_service.errors ]
-            }
+            raise order_service.errors
           end
         end
       rescue GraphQL::ExecutionError => err
