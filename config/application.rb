@@ -42,5 +42,10 @@ module FleetpandaPetroleumSoftware
 
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
+
+    config.generators.system_tests = nil
+    config.generators.each do |g|
+      g.test_framework = :rspec
+    end
   end
 end
