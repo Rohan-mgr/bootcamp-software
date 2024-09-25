@@ -43,7 +43,7 @@ module Categories
       begin
         @categories = Category.order(created_at: :DESC).where([ "category_class = ?", params[:category_class].downcase ])
         if @categories.empty?
-          @success = false
+          @success = true
           @errors << "No categories found"
         else
           @success = true
