@@ -112,7 +112,7 @@ module Orders
       begin
         order_group = OrderGroup.order(created_at: :DESC).where(parent_order_id: nil, recurring: nil)
         if order_group.empty?
-          @success = false
+          @success = true
           @errors << "No orders created yet"
         else
           @success = true
@@ -183,7 +183,7 @@ module Orders
       begin
         recurring_orders = OrderGroup.recurring_orders
         if recurring_orders.empty?
-          @success = false
+          @success = true
           @errors << "No recurring orders created yet"
         else
           @success = true

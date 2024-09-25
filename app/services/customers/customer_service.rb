@@ -64,7 +64,7 @@ module Customers
       begin
         @customers = ActsAsTenant.current_tenant.customers.order(created_at: :DESC)
         if @customers.empty?
-          @success = false
+          @success = true
           @errors << "No customers found"
         else
           @success = true

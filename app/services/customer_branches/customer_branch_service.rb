@@ -48,7 +48,7 @@ module CustomerBranches
           @success = true
           @errors = []
         else
-          @success = false
+          @success = true
           @errors << "Customer not found"
         end
       end
@@ -66,7 +66,7 @@ module CustomerBranches
           @success = true
           @errors = []
         else
-          @success = false
+          @success = true
           @errors << "Customer not found"
         end
       end
@@ -84,7 +84,7 @@ module CustomerBranches
             @success = true
             @errors = []
           else
-            @success = false
+            @success = true
             @errors << "Customer Branch not found"
           end
       rescue ActiveRecord::ActiveRecordError => err
@@ -93,8 +93,7 @@ module CustomerBranches
       end
     end
 
-    def 
-      handle_delete_customer_branch
+    def handle_delete_customer_branch
       begin
         customer_branch = CustomerBranch.find(params[:id])
         if current_user.admin?
