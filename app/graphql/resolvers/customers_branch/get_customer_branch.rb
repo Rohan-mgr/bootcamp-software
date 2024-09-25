@@ -14,10 +14,7 @@ module Resolvers
               errors: []
             }
           else
-            {
-              customer_branches: nil,
-              errors: [ customer_branch_service.errors ]
-            }
+            raise customer_branch_service.errors
           end
         end
       rescue GraphQL::ExecutionError => err

@@ -93,7 +93,8 @@ module CustomerBranches
       end
     end
 
-    def handle_delete_customer_branch
+    def 
+      handle_delete_customer_branch
       begin
         customer_branch = CustomerBranch.find(params[:id])
         if current_user.admin?

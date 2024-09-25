@@ -15,10 +15,7 @@ module Mutations
                 errors: []
               }
             else
-              {
-                asset: nil,
-                errors: [ asset_service.errors ]
-              }
+              raise asset_service.errors
             end
        end
       rescue GraphQL::ExecutionError => e

@@ -13,10 +13,7 @@ module Mutations
               errors: []
             }
           else
-            {
-              message: "Failed to logout!",
-              errors: [ user_session_service.errors ]
-            }
+            raise user_session_service.errors
           end
         rescue StandardError, GraphQL::ExecutionError => err
           {
