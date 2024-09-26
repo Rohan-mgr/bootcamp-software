@@ -161,7 +161,7 @@ module Orders
 
       child_orders = OrderGroup.where(parent_order_id: parent_order.id, is_self_updated: false).where.not(status: "completed")
       child_orders.each do |child_order|
-        child_order.update!(order_params)
+        child_order.update!(order_params.except(:started_at))
       end
     end
 
