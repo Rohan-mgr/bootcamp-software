@@ -40,6 +40,7 @@ module Assets
     private
 
     def handle_asset_creation
+      begin
         if user.present? && user.admin?
           @asset = Asset.new(asset_params.merge(user_id: user.id))
           if @asset.save!
@@ -53,13 +54,14 @@ module Assets
           @success = false
           @errors << "You are not authorized to perform this action"
         end
-    rescue ActiveRecord::Rollback, ActiveRecord::RecordInvalid => err
-      @success = false
-      @errors << err.message
+      rescue ActiveRecord::RecordInvalid => err
+        @success = false
+        @errors << err.message
+      end
     end
 
     def handle_asset_deletion
-      ActiveRecord::Base.transaction do
+      begin
         @asset = Asset.find_by!(id: params[:id])
         if @asset && user.present? && user.admin?
             if @asset.destroy
@@ -81,7 +83,7 @@ module Assets
     end
 
     def handle_asset_edit
-      ActiveRecord::Base.transaction do
+      begin
         @asset = Asset.find_by!(id: params[:id])
         if user.present? && user.admin?
           if @asset.update!(asset_params.except(:asset_id))
@@ -102,18 +104,19 @@ module Assets
     end
 
     def handle_fetch_asset
-      @assets = Asset.order(created_at: :DESC)
-
-      if @assets.empty?
-        @success = true
-        @errors << "No asset created yet"
-      else
-        @success = true
-        @errors = []
+      begin
+        @assets = Asset.order(created_at: :DESC)
+        if @assets.empty?
+          @success = true
+          @errors << "No asset created yet"
+        else
+          @success = true
+          @errors = []
+        end
+      rescue ActiveRecord::ActiveRecordError => err
+        @success = false
+        @errors << err.message
       end
-    rescue ActiveRecord::ActiveRecordError => err
-      @success = false
-      @errors << [ err.message ]
     end
 
     def user
@@ -122,7 +125,6 @@ module Assets
     end
 
     def asset_params
-      # Sanitize input using strong parameters approach
       ActionController::Parameters.new(params).permit(:asset_id, :asset_category, :asset_status)
     end
   end
