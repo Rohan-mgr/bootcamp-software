@@ -30,7 +30,7 @@ module Users
     private
 
     def handle_user_sign_in
-      ActiveRecord::Base.transaction do
+      begin
         @user = User.find_for_authentication(email: params[:email])
         if user&.valid_password?(params[:password])
           @token = @user.generate_jwt
@@ -41,20 +41,29 @@ module Users
           @success = false
           @errors << "Invalid email or password!"
         end
-      end
-    rescue ActiveRecord::Rollback => err
+      rescue ActiveRecord::RecordNotFound => err
         @success = false
         @errors = err.message
+      end
     end
 
     def handle_user_signout(current_user)
-      if current_user
-        current_user.update(jti: SecureRandom.uuid)
-        @success = true
-        @errors = []
-      else
+      begin
+        if current_user
+          if current_user.update(jti: SecureRandom.uuid)
+            @success = true
+            @errors = []
+          else
+            @success = false
+            @errors = current_user.errors.full_messages
+          end
+        else
+          @success = false
+          @errors << "Failed to logout! User not found."
+        end
+      rescue StandardError => e
         @success = false
-        @errors << "Failed to logout!"
+        @errors << "An error occurred while logging out: #{e.message}"
       end
     end
   end

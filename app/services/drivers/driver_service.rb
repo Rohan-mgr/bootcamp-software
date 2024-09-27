@@ -59,7 +59,7 @@ module Drivers
       end
 
     def handle_driver_deletion
-        ActiveRecord::Base.transaction do
+        begin
           @driver = Driver.find_by!(id: params[:id])
           if @driver && user.present? && user.admin?
               if @driver.destroy
@@ -84,7 +84,7 @@ module Drivers
     end
 
     def handle_driver_edit
-      ActiveRecord::Base.transaction do
+      begin
         @driver = Driver.find_by!(id: params[:id])
         if user.present? && user.admin?
           if @driver.update!(driver_params)

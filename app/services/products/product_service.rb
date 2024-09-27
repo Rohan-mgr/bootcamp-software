@@ -60,24 +60,27 @@ module Products
     end
 
     def create_product
-      ActiveRecord::Base.transaction do
+      begin
         @product = Product.new(product_params.merge(user_id: current_user.id))
         if @product.save!
           @success = true
           @errors = []
+        else
+          @success = false
+          @errors << "Failed to create product"
         end
-      end
 
-    rescue ActiveRecord::RecordInvalid => err
+      rescue ActiveRecord::RecordInvalid => err
         @success = false
         @errors << err.message
-    rescue ActiveRecord::RecordNotFound => err
+      rescue ActiveRecord::RecordNotFound => err
         @success = false
         @errors << err.message
+      end
     end
 
     def update_product
-      ActiveRecord::Base.transaction do
+      begin
        @product = Product.find(params[:id])
         if current_user.admin?
           if @product.update!(product_params)
@@ -91,14 +94,14 @@ module Products
           @success = false
           @errors = [ "Sorry! You do not have permission to update this product." ]
         end
-      end
 
-    rescue ActiveRecord::RecordInvalid => err
-      @success = false
-      @errors << err.message
-    rescue ActiveRecord::RecordNotFound => err
-      @success = false
-      @errors << err.message
+      rescue ActiveRecord::RecordInvalid => err
+        @success = false
+        @errors << err.message
+      rescue ActiveRecord::RecordNotFound => err
+        @success = false
+        @errors << err.message
+      end
     end
 
     def delete_product

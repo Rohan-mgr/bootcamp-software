@@ -25,7 +25,7 @@ module Users
     private
 
     def handle_user_registration
-      ActiveRecord::Base.transaction do
+      begin
         if organization.present?
           ActsAsTenant.without_tenant do
             @user = User.new(sign_up_params)
@@ -38,11 +38,14 @@ module Users
         @success = false
         @errors << "Organzation not found!"
         end
-      end
 
-    rescue ActiveRecord::Rollback => err
-      @success = false
-      @errors << err.message
+      rescue ActiveRecord::RecordInvalid => err
+        @success = false
+        @errors << err.message
+      rescue StandardError => err
+        @success = false
+        @errors << err.message
+      end
     end
 
     def organization
