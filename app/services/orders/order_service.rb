@@ -206,7 +206,7 @@ module Orders
     end
 
     def schedule_recurring_orders(order_group)
-      RecurringOrderJob.perform_async(order_group.id)
+      RecurringOrderJob.perform_async(order_group.id, current_tenant.id)
     end
 
     def serialize_order(order)
