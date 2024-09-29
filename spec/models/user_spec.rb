@@ -4,7 +4,7 @@ RSpec.describe User, type: :model do
   let(:user) { build(:user) }
 
   it "should have email" do
-    expect(user.email).to eq("dummy@gmail.com")
+    expect(user.email).to eq("rohan.magar@fleetpanda.com")
   end
 
   it "should be invalid without email" do
