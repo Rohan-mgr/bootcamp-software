@@ -1,4 +1,5 @@
 class OrderGroup < ApplicationRecord
+  include Order::OrderStatus
   scope :recurring_orders, -> { where.not(parent_order_id: nil, recurring: nil).order(created_at: :DESC) }
 
   belongs_to :customer
