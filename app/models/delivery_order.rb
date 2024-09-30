@@ -1,6 +1,6 @@
 class DeliveryOrder < ApplicationRecord
   belongs_to :customer_branch
-  belongs_to :asset
+  belongs_to :asset, optional: true
 
   belongs_to :order_group
   has_many :line_items, dependent: :destroy

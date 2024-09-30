@@ -7,7 +7,7 @@ class Customer < ApplicationRecord
 
   before_destroy :destroy_incomplete_order_groups
 
-  private 
+  private
 
   def destroy_incomplete_order_groups
     order_groups.where.not(status: :completed).destroy_all
