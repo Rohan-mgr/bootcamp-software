@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_27_160040) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_30_062644) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -108,7 +108,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_27_160040) do
     t.string "status", default: "pending", null: false
     t.datetime "started_at"
     t.datetime "completed_at"
-    t.bigint "customer_id", null: false
+    t.bigint "customer_id"
     t.bigint "organization_id", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
@@ -173,7 +173,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_27_160040) do
   add_foreign_key "line_items", "delivery_orders"
   add_foreign_key "memberships", "customers"
   add_foreign_key "memberships", "organizations"
-  add_foreign_key "order_groups", "customers"
+  add_foreign_key "order_groups", "customers", on_delete: :nullify
   add_foreign_key "order_groups", "organizations"
   add_foreign_key "order_groups", "users"
   add_foreign_key "products", "organizations"
