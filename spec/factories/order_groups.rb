@@ -4,15 +4,17 @@ FactoryBot.define do
     started_at { "2024-10-01T12:01:54+00:00" }
     association :customer
 
-    after(:build) do |order_group, evaluator|
-      if evaluator.recurring
-        order_group.recurring = {
-          frequency: "daily",
-          started_at: "2024-10-02T12:01:54+00:00",
-          end_at: "2024-10-03T12:01:54+00:00"
-        }
-      else
-        order_group.recurring = nil
+    trait :recurring do
+      after(:build) do |order_group, evaluator|
+        if evaluator.recurring
+          order_group.recurring = {
+            frequency: "daily",
+            started_at: "2024-10-02T12:01:54+00:00",
+            end_at: "2024-10-03T12:01:54+00:00"
+          }
+        else
+          order_group.recurring = nil
+        end
       end
     end
 
