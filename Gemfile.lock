@@ -71,6 +71,9 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
+    acts_as_paranoid (0.10.2)
+      activerecord (>= 6.1, < 8)
+      activesupport (>= 6.1, < 8)
     acts_as_tenant (1.0.1)
       rails (>= 6.0)
     ast (2.4.2)
@@ -338,6 +341,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  acts_as_paranoid (~> 0.10.2)
   acts_as_tenant (~> 1.0)
   bootsnap
   brakeman
