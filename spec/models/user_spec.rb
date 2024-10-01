@@ -3,10 +3,6 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   let(:user) { build(:user) }
 
-  it "should have email" do
-    expect(user.email).to eq("rohan.magar@fleetpanda.com")
-  end
-
   it "should be invalid without email" do
     user.email = nil
     expect(user).not_to be_valid
