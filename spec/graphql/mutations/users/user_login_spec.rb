@@ -5,7 +5,7 @@ RSpec.describe Mutations::Users::UserLogin, type: :graphql do
   let!(:user) { create(:user, organization: organization) }
 
   it "is successful" do
-    result = execute_graphql(login_query, variables: { sessionInfo: { email: "rohan.magar@fleetpanda.com", password: "Test@123" } })
+    result = execute_graphql(login_query, variables: { sessionInfo: { email: user.email, password: user.password } })
     expect(result["data"]["userSession"]["user"]).not_to be_nil
   end
 
