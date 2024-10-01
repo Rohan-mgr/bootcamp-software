@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_30_062644) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_01_171514) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -44,7 +44,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_30_062644) do
     t.bigint "customer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.index ["customer_id"], name: "index_customer_branches_on_customer_id"
+    t.index ["deleted_at"], name: "index_customer_branches_on_deleted_at"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -55,6 +57,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_30_062644) do
     t.string "email"
     t.integer "zipcode"
     t.string "address"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_customers_on_deleted_at"
   end
 
   create_table "delivery_orders", force: :cascade do |t|
@@ -66,8 +70,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_30_062644) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "driver_id"
+    t.datetime "deleted_at"
     t.index ["asset_id"], name: "index_delivery_orders_on_asset_id"
     t.index ["customer_branch_id"], name: "index_delivery_orders_on_customer_branch_id"
+    t.index ["deleted_at"], name: "index_delivery_orders_on_deleted_at"
     t.index ["driver_id"], name: "index_delivery_orders_on_driver_id"
     t.index ["order_group_id"], name: "index_delivery_orders_on_order_group_id"
   end
@@ -92,6 +98,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_30_062644) do
     t.bigint "delivery_order_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_line_items_on_deleted_at"
     t.index ["delivery_order_id"], name: "index_line_items_on_delivery_order_id"
   end
 
@@ -117,7 +125,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_30_062644) do
     t.integer "parent_order_id"
     t.boolean "is_self_updated", default: false
     t.datetime "cancelled_at"
+    t.datetime "deleted_at"
     t.index ["customer_id"], name: "index_order_groups_on_customer_id"
+    t.index ["deleted_at"], name: "index_order_groups_on_deleted_at"
     t.index ["organization_id"], name: "index_order_groups_on_organization_id"
     t.index ["user_id"], name: "index_order_groups_on_user_id"
   end
