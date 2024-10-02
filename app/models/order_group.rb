@@ -11,6 +11,16 @@ class OrderGroup < ApplicationRecord
 
   belongs_to :user
 
+  def update_with_delivery_order(params)
+    transaction do
+      if self.delivery_order.present?
+        self.delivery_order.destroy_fully!
+      end
+      self.create_delivery_order(params[:delivery_order_attributes])
+      self.update!(params.except(:delivery_order_attributes))
+    end
+  end
+
   def set_recurring_details(recurring_details = nil)
     self.recurring = recurring_details
   end

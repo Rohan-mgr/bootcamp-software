@@ -85,7 +85,7 @@ module Orders
                 @success = true
                 @errors = []
               else
-                if order_group.update!(order_params.merge(is_self_updated: true))
+                if order_group.update_with_delivery_order(order_params.merge(is_self_updated: true))
                   @success = true
                   @errors = []
                   @order = serialize_order(order_group)
@@ -157,11 +157,11 @@ module Orders
     def update_recurring_orders(order_group)
       parent_order = order_group.parent_order_id.present? ? OrderGroup.find(order_group.parent_order_id) : order_group
 
-      parent_order.update!(order_params) if parent_order.status != "completed"
+      parent_order.update_with_delivery_order(order_params) if parent_order.status != "completed"
 
       child_orders = OrderGroup.where(parent_order_id: parent_order.id, is_self_updated: false).where.not(status: "completed")
       child_orders.each do |child_order|
-        child_order.update!(order_params.except(:started_at))
+        child_order.update_with_delivery_order(order_params.except(:started_at))
       end
     end
 
