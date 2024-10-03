@@ -2,7 +2,7 @@ class Customer < ApplicationRecord
   acts_as_paranoid
 
   has_many :memberships, dependent: :destroy
-  has_many :organization, through: :memberships
+  has_many :organizations, through: :memberships
 
   has_many :customer_branches, dependent: :destroy
   has_many :order_groups
