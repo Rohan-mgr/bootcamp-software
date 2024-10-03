@@ -163,6 +163,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_01_171514) do
     t.datetime "updated_at", null: false
     t.string "jti"
     t.bigint "organization_id", null: false
+    t.string "type"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti"
     t.index ["organization_id"], name: "index_users_on_organization_id"
