@@ -1,4 +1,5 @@
 require "rails_helper"
+require 'faker'
 
 RSpec.describe Mutations::Assets::CreateAsset, type: :graphql do
   let!(:organization) { create(:organization) }
@@ -6,8 +7,8 @@ RSpec.describe Mutations::Assets::CreateAsset, type: :graphql do
 
   it "is successful" do
     asset_info = {
-      assetId: "C CD 4929",
-      assetCategory: "Tank Wagon",
+      assetId: Faker::Vehicle.license_plate,
+      assetCategory: Faker::Vehicle.car_type,
       assetStatus: "active"
     }
 

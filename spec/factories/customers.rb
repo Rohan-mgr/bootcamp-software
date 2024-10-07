@@ -1,9 +1,11 @@
+require 'faker'
+
 FactoryBot.define do
   factory :customer do
-    name { "Himal Oil Corporation" }
-    phone_no { "9807123456" }
-    zipcode { 44600 }
-    email { "himal@gmail.com" }
-    address { "Simara, Bara" }
+    name { Faker::Company.name }
+    phone_no { Faker::PhoneNumber.phone_number }
+    zipcode { Faker::Address.zip_code }
+    email { Faker::Internet.email(domain: 'example.com') }
+    address { Faker::Address.full_address }
   end
 end

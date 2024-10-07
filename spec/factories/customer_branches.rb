@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :customer_branch do
-    name { "imal Oil Corporation B1" }
-    location { "Bhaktapur, Nepal" }
+    name { Faker::Company.name }
+    location { Faker::Address.full_address }
 
     association :customer
   end

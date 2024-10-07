@@ -1,19 +1,18 @@
+require 'faker'
 require "rails_helper"
 
 RSpec.describe Mutations::Customers::CreateCustomer, type: :graphql do
   let!(:organization) { create(:organization) }
   let!(:user) { create(:user, organization: organization) }
-  let!(:customer) { create(:customer) }
 
   it "is successfull" do
     customer_info = {
-      name: "Simara Oil Corporation",
-      phoneNo: "9809876543",
-      zipcode: 4600,
-      email: "simara.nepal@gmail.com",
-      address: "Simara, Bara"
+      name: Faker::Company.name,
+      phoneNo: Faker::PhoneNumber.phone_number,
+      zipcode: Faker::Address.zip_code.to_i,
+      email: Faker::Internet.email(domain: 'example.com'),
+      address: Faker::Address.full_address
     }
-
 
     ActsAsTenant.with_tenant(organization) do
       result = execute_graphql(customer_creation_query, variables: { customerInfo: customer_info }, context: { current_user: user })

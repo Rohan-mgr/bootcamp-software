@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :organization do
-    name { "Himal Lubricants Pvt.Ltd" }
+    name { Faker::Company.industry }
   end
 end

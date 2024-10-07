@@ -1,4 +1,5 @@
 require "rails_helper"
+require 'faker'
 
 RSpec.describe Mutations::Orders::UpdateOrder, type: :graphql do
   let!(:organization) { create(:organization) }
@@ -12,10 +13,10 @@ RSpec.describe Mutations::Orders::UpdateOrder, type: :graphql do
   it "updates the order group successfully" do
     order_info = {
       status: "pending",
-      startedAt: "2024-09-30T12:01:54+00:00",
+      startedAt: Faker::Time.backward(days: 14).iso8601,
       customerId: customer.id,
       deliveryOrderAttributes: {
-        plannedAt: "2024-09-30T12:01:54+00:00",
+        plannedAt: Faker::Time.backward(days: 14).iso8601,
         customerBranchId: customer_branch.id,
         assetId: asset.id,
         driverId: driver.id,

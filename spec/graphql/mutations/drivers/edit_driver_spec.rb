@@ -1,4 +1,5 @@
 require "rails_helper"
+require 'faker'
 
 RSpec.describe Mutations::Drivers::EditDriver, type: :graphql do
   let!(:organization) { create(:organization) }
@@ -7,9 +8,9 @@ RSpec.describe Mutations::Drivers::EditDriver, type: :graphql do
 
   it "is successful" do
     driver_info = {
-      name: "Rajesh Rawan",
-      email: "yopivob499@degcos.com",
-      phone: "9866116627",
+      name: Faker::Name.name,
+      email: Faker::Internet.email(domain: 'example.com'),
+      phone: Faker::PhoneNumber.phone_number,
       status: "active"
   }
 

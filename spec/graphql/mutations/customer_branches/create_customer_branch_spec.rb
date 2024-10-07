@@ -1,4 +1,5 @@
 require "rails_helper"
+require 'faker'
 
 RSpec.describe Mutations::CustomersBranch::CreateCustomerBranch, type: :graphql do
   let!(:organization) { create(:organization) }
@@ -7,8 +8,8 @@ RSpec.describe Mutations::CustomersBranch::CreateCustomerBranch, type: :graphql 
 
   it "is successfull" do
     branch_info = {
-    name: " Romiya Oil Corporation",
-    location: "Kathmandu, Nepal",
+    name: Faker::Company.name,
+    location: Faker::Address.full_address,
     customerId: customer.id
   }
 
