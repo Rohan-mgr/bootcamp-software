@@ -1,10 +1,12 @@
+require 'faker'
+
 FactoryBot.define do
   factory :user do
-    name { "Rohan Rana Magar" }
-    sequence(:email) { |n| "rohan.magar#{n}@fleetpanda.com" }
-    password { "Test@123" }
-    password_confirmation { "Test@123" }
-    organization_id { 1 }
+    name { Faker::Name.name }
+    email { Faker::Internet.email(domain: 'example.com') }
+    password { Faker::Alphanumeric.alphanumeric(number: 8) }
+    password_confirmation { password }
+    association :organization
     roles { "admin" }
   end
 end

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :order_group do
     status { "pending" }
-    started_at { "2024-10-01T12:01:54+00:00" }
+    started_at { Faker::Time.backward(days: 14).iso8601 }
     association :customer
 
     trait :recurring do
@@ -9,8 +9,8 @@ FactoryBot.define do
         if evaluator.recurring
           order_group.recurring = {
             frequency: "daily",
-            started_at: "2024-10-02T12:01:54+00:00",
-            end_at: "2024-10-03T12:01:54+00:00"
+            started_at: Faker::Time.forward(days: 365).iso8601,
+            end_at: Faker::Time.forward(days: 365).iso8601
           }
         else
           order_group.recurring = nil
@@ -24,7 +24,7 @@ FactoryBot.define do
         user = create(:user, organization: organization)
 
         order_group.delivery_order_attributes = {
-          planned_at: "2024-10-01T12:01:54+00:00",
+          planned_at: Faker::Time.backward(days: 14).iso8601,
           customer_branch_id: create(:customer_branch, customer: order_group.customer).id,
           asset_id: create(:asset, user: user, organization: organization).id,
           driver_id: create(:driver, user: user, organization: organization).id,

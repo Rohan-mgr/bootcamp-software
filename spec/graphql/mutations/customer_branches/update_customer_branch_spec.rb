@@ -8,8 +8,8 @@ RSpec.describe Mutations::CustomersBranch::UpdateCustomerBranch, type: :graphql 
 
   it "is successful" do
     branch_info = {
-      name: "Check3Completed Petroleum Pvt.Ltd",
-      location: "BiratnagarChowk, Nepal",
+      name: Faker::Company.name,
+      location: Faker::Address.full_address,
       customerId: customer.id
     }
 

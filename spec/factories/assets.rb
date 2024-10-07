@@ -1,7 +1,9 @@
+require 'faker'
+
 FactoryBot.define do
   factory :asset do
-    sequence(:asset_id) { |n| "BA AB #{4929 + n}" }
+    asset_id { Faker::Vehicle.license_plate }
     asset_status { "active" }
-    asset_category { "Tank Wagon" }
+    asset_category { Faker::Vehicle.car_type }
   end
 end

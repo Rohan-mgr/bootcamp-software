@@ -1,4 +1,5 @@
 require "rails_helper"
+require 'faker'
 
 RSpec.describe Mutations::Customers::UpdateCustomer, type: :graphql do
   let!(:organization) { create(:organization) }
@@ -7,11 +8,11 @@ RSpec.describe Mutations::Customers::UpdateCustomer, type: :graphql do
 
   it "is successfull" do
     customer_info = {
-      name: "Ilam Oil Corporation",
-      phoneNo: "9809876543",
-      zipcode: 4600,
-      email: "simara.nepal@gmail.com",
-      address: "Simara, Bara"
+      name: Faker::Company.name,
+      phoneNo: Faker::PhoneNumber.phone_number,
+      zipcode: Faker::Address.zip_code.to_i,
+      email: Faker::Internet.email(domain: 'example.com'),
+      address: Faker::Address.full_address
     }
 
 

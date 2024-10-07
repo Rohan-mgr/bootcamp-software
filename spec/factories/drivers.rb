@@ -1,8 +1,10 @@
+require 'faker'
+
 FactoryBot.define do
   factory :driver do
-    name { "Rajesh Rawani" }
-    email { "rajesh.rawani@gmail.com" }
-    phone { "9864234532" }
+    name { Faker::Name.name }
+    email { Faker::Internet.email(domain: 'example.com') }
+    phone { Faker::PhoneNumber.phone_number }
     status { "active" }
   end
 end
